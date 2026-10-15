@@ -5,8 +5,9 @@ on:
   workflow_dispatch:
   push:
     paths:
-      - ".github/workflows/android.yml"
+      - ".github/workflows/main.yml"
       - "app/**"
+      - "gradlew"
       - "build.gradle"
       - "settings.gradle"
       - "gradle/**"
@@ -27,6 +28,13 @@ jobs:
 
       - name: Set up Android SDK
         uses: android-actions/setup-android@v3
+        with:
+          accept-android-sdk-licenses: true
+
+      - name: Check project files
+        run: |
+          ls -la
+          test -f gradlew || (echo "gradlew file missing" && exit 1)
 
       - name: Build APK
         run: |
